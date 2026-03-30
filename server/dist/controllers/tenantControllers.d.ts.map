@@ -1,0 +1,1 @@
+{"version":3,"file":"tenantControllers.d.ts","sourceRoot":"","sources":["../../src/controllers/tenantControllers.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAMjD,eAAO,MAAM,SAAS,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,KAAG,OAAO,CAAC,IAAI,CAqBzE,CAAC;AAEF,eAAO,MAAM,YAAY,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,KAAG,OAAO,CAAC,IAAI,CAmB5E,CAAC"}
