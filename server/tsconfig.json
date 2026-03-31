@@ -42,6 +42,9 @@
   "include": [
     "src/**/*",
     "src/data/**/*.json",
-    "prisma/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "prisma"
   ]
 }
