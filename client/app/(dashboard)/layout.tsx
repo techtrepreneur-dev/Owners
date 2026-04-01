@@ -5,11 +5,10 @@ import Sidebar from "@/components/AppSidebar";
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { getAuthUser } from "@/lib/actions/user";
 
+export const dynamic = 'force-dynamic';
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
     const authUser = await getAuthUser()
-
-
 
     //   useEffect(() => {
     //     if (authUser) {

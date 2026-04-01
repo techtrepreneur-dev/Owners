@@ -8,12 +8,21 @@ import React from "react";
 
 const page = async () => {
     const authUser = (await getAuthUser())?.data
+
+    // 2. Guard clause: If no user, don't try to fetch properties
+    if (!authUser?.id) {
+        return (
+            <div className="dashboard-container">
+                <Header title="Favorited Properties" subtitle="Please log in to view properties" />
+                <p>You must be logged in to view this page.</p>
+            </div>
+        );
+    }
+
     const properties = (await getManagerProperties(authUser.id))?.data
 
     return (
         <div className="dashboard-container">
-
-
             <Header
                 title="Favorited Properties"
                 subtitle="Browse and manage your saved property listings"
