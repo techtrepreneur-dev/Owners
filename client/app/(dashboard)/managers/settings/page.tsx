@@ -4,6 +4,13 @@ import React from 'react'
 
 export default async function page() {
     const authUser = await getAuthUser()
+    if (!authUser?.data?.id) {
+        return (
+            <div className="dashboard-container">
+                <p>You must be logged in to view this page.</p>
+            </div>
+        );
+    }
     return (
         <div className='flex justify-center'>
             <div className="w-full md:w-4/6">

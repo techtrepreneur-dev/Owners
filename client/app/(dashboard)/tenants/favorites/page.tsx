@@ -8,6 +8,16 @@ import React from "react";
 
 const Favorites = async () => {
     const authUser = (await getAuthUser())?.data
+
+    if (!authUser?.id) {
+        return (
+            <div className="dashboard-container">
+                <Header title="Favorited Properties" subtitle="Please log in to view properties" />
+                <p>You must be logged in to view this page.</p>
+            </div>
+        );
+    }
+
     const tenant = (await getTenent(authUser.id))?.data
     const favoriteProperties = tenant.favorites
 

@@ -13,7 +13,7 @@ const page = async () => {
     if (!authUser?.id) {
         return (
             <div className="dashboard-container">
-                <Header title="Favorited Properties" subtitle="Please log in to view properties" />
+                <Header title="Properties" subtitle="Please log in to view properties" />
                 <p>You must be logged in to view this page.</p>
             </div>
         );
@@ -24,8 +24,8 @@ const page = async () => {
     return (
         <div className="dashboard-container">
             <Header
-                title="Favorited Properties"
-                subtitle="Browse and manage your saved property listings"
+                title="Properties"
+                subtitle="Browse and manage your property listings"
             />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
 
