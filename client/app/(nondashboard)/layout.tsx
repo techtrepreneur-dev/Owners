@@ -5,6 +5,7 @@ import { NAVBAR_HEIGHT } from "@/lib/constants";
 // import { usePathname, useRouter } from "next/navigation";
 // import React, { useEffect, useState } from "react";
 
+export const dynamic = 'force-dynamic';
 const Layout = async ({ children }: { children: React.ReactNode }) => {
     const authUser = await getAuthUser()
 
