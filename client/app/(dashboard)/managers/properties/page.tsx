@@ -19,7 +19,7 @@ const page = async () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
                 {properties?.map((property) => (
                     <Card
-                        key={property.id}
+                        key={property?.id}
                         property={property}
                         isFavorite={true}
                         showFavoriteButton={false}
@@ -27,7 +27,7 @@ const page = async () => {
                     />
                 ))}
             </div>
-            {(!properties || properties.length === 0) && (
+            {(!properties || properties?.length === 0) && (
                 <p>You don&lsquo;t have any favorited properties</p>
             )}
         </div>
