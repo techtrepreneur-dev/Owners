@@ -12,6 +12,8 @@ const page = async () => {
 
     return (
         <div className="dashboard-container">
+
+
             <Header
                 title="Favorited Properties"
                 subtitle="Browse and manage your saved property listings"
