@@ -23,7 +23,7 @@ const page = async () => {
                         property={property}
                         isFavorite={true}
                         showFavoriteButton={false}
-                        propertyLink={`/tenants/residences/${property.id}`}
+                        propertyLink={`/tenants/residences/${property?.id}`}
                     />
                 ))}
             </div>

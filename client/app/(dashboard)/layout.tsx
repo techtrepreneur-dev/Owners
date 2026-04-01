@@ -37,7 +37,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                 <Navbar authUser={authUser?.data} />
                 <div style={{ marginTop: `${NAVBAR_HEIGHT}px` }}>
                     <main className="flex">
-                        <Sidebar userType={authUser?.data?.role.toLowerCase()} />
+                        <Sidebar userType={authUser?.data?.role?.toLowerCase()} />
                         <div className="grow transition-all duration-300 p-5">
                             {children}
                         </div>
