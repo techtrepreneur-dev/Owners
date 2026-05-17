@@ -1,5 +1,4 @@
 "use client";
-
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -130,7 +129,7 @@ const Navbar = ({ authUser }) => {
                     </AvatarFallback>
                   </Avatar>
                   <p className="text-primary-200 hidden md:block">
-                    {authUser?.name}
+                    {authUser?.firstName}
                   </p>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-white text-primary-700">

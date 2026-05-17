@@ -14,7 +14,7 @@ import {
     Property,
     Tenant,
 } from "@/lib/types/prismaTypes";
-
+import { auth } from "@/auth"
 interface DecodedToken extends JwtPayload {
     sub: string;
     "id": string;
@@ -27,25 +27,28 @@ export async function getAuthUser() {
 
         const cookieStore = await cookies();
         const token = cookieStore.get('session-token');
+        const session = await auth()
 
-        if (!token) return null
+        if (!token && !session) return null
 
         const decoded: DecodedToken = jwt.decode(token?.value);
 
-        const email = decoded.email
+        const email = decoded?.email || session?.user?.email
+        console.log(email)
 
         const res = await fetch(process.env.API_BASE_URL + "/auth/user",
 
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token?.value}`
                 },
                 body: JSON.stringify({ email })
             }
         )
 
-        const resData: Promise<{ success: boolean, data: Tenant | null, error: string | null }> = res.json()
+        const resData: Promise<{ success: boolean, data: Tenant | Manager | null, error: string | null }> = res.json()
         const user = await resData
 
         if (!user.success) return null
