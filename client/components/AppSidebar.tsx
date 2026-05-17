@@ -13,6 +13,8 @@ import {
 import {
     Building,
     FileText,
+    Grid,
+    Grid2X2,
     Heart,
     Home,
     Menu,
@@ -30,7 +32,8 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
     const navLinks =
         userType === "manager"
             ? [
-                { icon: Building, label: "Properties", href: "/managers/properties" },
+                { icon: Grid2X2, label: "Dashboard", href: "/managers/dashboard" },
+                { icon: Home, label: "Properties", href: "/managers/properties" },
                 {
                     icon: FileText,
                     label: "Applications",

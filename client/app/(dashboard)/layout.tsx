@@ -32,7 +32,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
     return (
         <SidebarProvider>
-            <div className="min-h-screen w-full bg-primary-100">
+            <div className="min-h-screen w-full bg-primary-50">
                 <Navbar authUser={authUser?.data} />
                 <div style={{ marginTop: `${NAVBAR_HEIGHT}px` }}>
                     <main className="flex">

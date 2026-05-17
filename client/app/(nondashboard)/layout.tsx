@@ -12,7 +12,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     //   const router = useRouter();
     //   const pathname = usePathname();
     //   const [isLoading, setIsLoading] = useState(true);
-    // console.log(authUser)
+    console.log(authUser)
     //   useEffect(() => {
     //     if (authUser) {
     //       const userRole = authUser.userRole?.toLowerCase();

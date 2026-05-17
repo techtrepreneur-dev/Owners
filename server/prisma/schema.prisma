@@ -84,37 +84,51 @@ model Property {
   postedDate        DateTime     @default(now())
   averageRating     Float?       @default(0)
   numberOfReviews   Int?         @default(0)
+
+  publishStatus     Boolean      @default(false)
+  activeStatus      Boolean      @default(false)
+  deleteStatus      Boolean      @default(false)
+
   locationId        Int
   managerId         Int  
 
   location     Location      @relation(fields: [locationId], references: [id])
   manager      Manager       @relation(fields: [managerId], references: [id])
   leases       Lease[]
-  applications Application[]
+  applications Application[]  
   favoritedBy  Tenant[]      @relation("TenantFavorites")
-  tenants      Tenant[]      @relation("TenantProperties")
 }
 
 model Manager {
   id          Int    @id @default(autoincrement())
   role        String 
-  name        String
+  firstName   String
+  lastName    String
   email       String @unique
   phone       String
+  state       String
   password    String
 
+  address     String @default("")
+  nin         String @default("")
+  tire        String @default("1")
+  emailVerified Boolean @default(false)
+  profileVerified Boolean @default(false)
+  
   managedProperties Property[]
 }
 
 model Tenant {
   id          Int    @id @default(autoincrement())
   role        String
-  name        String
+  firstName   String
+  lastName    String
   email       String @unique
   phone       String
+  state       String
   password    String
+  emailVerified Boolean @default(false)
 
-  properties   Property[]    @relation("TenantProperties")
   favorites    Property[]    @relation("TenantFavorites")
   applications Application[]
   leases       Lease[]
@@ -174,4 +188,14 @@ model Payment {
   leaseId       Int
 
   lease Lease @relation(fields: [leaseId], references: [id])
+}
+
+
+model VerificationCode {
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  token     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
 }
