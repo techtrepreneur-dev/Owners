@@ -109,6 +109,7 @@ export function SignUpForm() {
                 </div>
             </div>
 
+<<<<<<< HEAD
 
             <div className="mb-3">
                 <label htmlFor="fullName" className="block text-primary-700 font-medium mb-1">
@@ -126,6 +127,8 @@ export function SignUpForm() {
                 </div>
             </div>
 
+=======
+>>>>>>> 4b8e99b07dd4bdde1f419bf08efc85c182f93d39
             <div className="mb-3">
                 <label className="block text-primary-700 font-medium mb-1">
                     Role
