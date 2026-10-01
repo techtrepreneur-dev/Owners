@@ -5,6 +5,9 @@ import { getAuthUser } from "@/lib/actions/user";
 import { Coins, HomeIcon, Paperclip, TrophyIcon } from 'lucide-react'
 import React from "react";
 import PendingApplications from "./_components/PendingApplications";
+import { listApplications } from "@/lib/actions/application";
+import { getDayCategory } from "@/lib/utils";
+
 const page = async () => {
     const authUser = (await getAuthUser())?.data
 
@@ -18,8 +21,16 @@ const page = async () => {
         );
     }
 
-
     const properties = (await getManagerProperties(authUser.id))?.data
+
+    const applications = await listApplications(authUser.id, "manager");
+
+    const newApplications = applications?.data?.map((app) => ({
+        ...app,
+        day: getDayCategory(app.applicationDate),
+    }));
+
+    console.log(newApplications)
 
     return (
         <div className="dashboard-container">
@@ -85,7 +96,7 @@ const page = async () => {
 
                     {/* pending applications */}
                     <div className="w-full md:w-4/12 rounded-2xl">
-                        <PendingApplications />
+                        <PendingApplications applications={newApplications} />
                     </div>
                 </div>
 

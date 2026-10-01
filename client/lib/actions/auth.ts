@@ -8,7 +8,8 @@ import { signIn } from "@/auth"
 import { auth } from "@/auth";
 import { Resend } from "resend";
 import VerificationEmail from "@/emails/auth/VerificationEmail";
-import ForgetPasswordOtp from "@/emails/auth/ForgetPassswordOtp";
+import ForgetPasswordOtp from "@/emails/auth/ForgetPasswordOtp";
+
 
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -23,6 +24,7 @@ export const signUp = async (prevState: ActionState, formData: FormData): Promis
             email: formData.get("email"),
             phone: formData.get("phone"),
             state: formData.get("state"),
+            city: formData.get("city"),
             password: formData.get("password"),
             confirmPassword: formData.get("confirmPassword"),
             role: formData.get("role"),
@@ -34,11 +36,11 @@ export const signUp = async (prevState: ActionState, formData: FormData): Promis
 
 
         // send verification link
-        const sendEmail = await sendEmailVerificationLink(validatedData.firstName, validatedData.email)
+        // const sendEmail = await sendEmailVerificationLink(validatedData.firstName, validatedData.email)
 
-        if (!sendEmail) {
-            return { success: false, error: "Email verification not sent, try again", fieldErrors: null }
-        }
+        // if (!sendEmail) {
+        //     return { success: false, error: "Email verification not sent, try again", fieldErrors: null }
+        // }
 
         const res = await fetch(`${process.env.API_BASE_URL}/auth/signup`, {
             method: 'POST',
@@ -177,8 +179,8 @@ export async function sendEmailVerificationLink(firstName: string, email: string
     // 2. Send via Resend
     const sendMail = await resend.emails.send({
         from: "Acme <onboarding@resend.dev>",
-        to: "techtrepreneur.dev@gmail.com",
-        subject: "Your verification code",
+        to: email,
+        subject: "Your verification link",
         react: VerificationEmail({ firstName, email, token }),
     });
     if (!sendMail.data) return false
@@ -265,7 +267,7 @@ export async function forgetPasswordOTP(firstName: string, email: string) {
     // 2. Send via Resend
     const sendMail = await resend.emails.send({
         from: "Acme <onboarding@resend.dev>",
-        to: "techtrepreneur.dev@gmail.com",
+        to: email,
         subject: "One Time Password",
         react: ForgetPasswordOtp({ firstName, token }),
     });

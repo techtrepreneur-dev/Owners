@@ -109,6 +109,23 @@ export function SignUpForm() {
                 </div>
             </div>
 
+
+            <div className="mb-3">
+                <label htmlFor="fullName" className="block text-primary-700 font-medium mb-1">
+                    City
+                </label>
+                <div className="relative">
+                    <input
+                        type="text"
+                        name="city"
+                        placeholder="e.g Ikeja"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-800"
+                        required
+                    />
+                    <p className="text-xs text-red-500 font-semiboldy">{state?.fieldErrors?.city}</p>
+                </div>
+            </div>
+
             <div className="mb-3">
                 <label className="block text-primary-700 font-medium mb-1">
                     Role

@@ -56,29 +56,31 @@ export const withToast = async <T>(
   }
 };
 
-export const createNewUserInDatabase = async (
-  user: any,
-  idToken: any,
-  userRole: string,
-  fetchWithBQ: any
-) => {
-  const createEndpoint =
-    userRole?.toLowerCase() === "manager" ? "/managers" : "/tenants";
+// Helper function to categorize the date
+export function getDayCategory(dateString: string): 'today' | 'yesterday' | 'this_week' | 'older' {
+  const appDate = new Date(dateString);
+  const now = new Date();
 
-  const createUserResponse = await fetchWithBQ({
-    url: createEndpoint,
-    method: "POST",
-    body: {
-      cognitoId: user.userId,
-      name: user.username,
-      email: idToken?.payload?.email || "",
-      phoneNumber: "",
-    },
-  });
+  // Extract year, month, and date in UTC to match the Prisma string
+  const appDay = Date.UTC(appDate.getUTCFullYear(), appDate.getUTCMonth(), appDate.getUTCDate());
 
-  if (createUserResponse.error) {
-    throw new Error("Failed to create user record");
+  // Extract today's date in UTC
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+
+  // 24 hours in milliseconds
+  const oneDayMs = 24 * 60 * 60 * 1000;
+  const yesterday = today - oneDayMs;
+
+  // Calculate the start of the current week in UTC (Sunday as start of week)
+  const startOfWeek = today - (now.getUTCDay() * oneDayMs);
+
+  if (appDay === today) {
+    return 'today';
+  } else if (appDay === yesterday) {
+    return 'yesterday';
+  } else if (appDay < yesterday && appDay >= startOfWeek) {
+    return 'this_week';
+  } else {
+    return 'older';
   }
-
-  return createUserResponse;
-};
+}

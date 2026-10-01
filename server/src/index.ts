@@ -14,6 +14,7 @@ import managerRoutes from "./routes/managerRoutes.js";
 import propertyRoutes from "./routes/propertyRoutes.js";
 // import leaseRoutes from "./routes/leaseRoutes";
 import applicationRoutes from "./routes/applicationRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 // Configurations
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/auth", authRoutes);
 
 
 app.use("/applications", authMiddleware, applicationRoutes);
+app.use("/payments", authMiddleware, paymentRoutes);
 app.use("/properties", propertyRoutes);
 // app.use("/leases", leaseRoutes);
 app.use("/tenants", authMiddleware, tenantRoutes);

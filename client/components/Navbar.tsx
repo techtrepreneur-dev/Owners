@@ -54,27 +54,9 @@ const Navbar = ({ authUser }) => {
               <SidebarTrigger />
             </div>
           )}
-          <Link
-            href="/"
-            className="cursor-pointer hover:text-primary-300!"
-            scroll={false}
-          >
-            <div className="flex items-center gap-3">
-              <Image
-                src="/logo.svg"
-                alt="Rentiful Logo"
-                width={24}
-                height={24}
-                className="w-6 h-6"
-              />
-              <div className="text-xl font-bold">
-                RENT
-                <span className="text-secondary-500 font-light hover:text-primary-300!">
-                  IFUL
-                </span>
-              </div>
-            </div>
-          </Link>
+          <div className="">
+            <a href="/landing" className="font-semibold tracking-wide block"> <span className="text-3xl">O</span><span className="text-2xl">w</span><span className="text-xl">n</span><span className="text-sm text-secondary-800">ers</span> </a>
+          </div>
           {isDashboardPage && authUser && (
             <Button
               variant="secondary"
@@ -121,18 +103,18 @@ const Navbar = ({ authUser }) => {
               </div>
 
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2 focus:outline-none">
+                <DropdownMenuTrigger className="flex items-center cursor-pointer gap-2 focus:outline-none">
                   <Avatar>
                     <AvatarImage src="" />
-                    <AvatarFallback className="bg-primary-600 border-2 border-white">
-                      <User2Icon />
+                    <AvatarFallback className="bg-primary-600 border-2 border-secondary-800">
+                      <Image src="/profile.png" alt="" width={1000} height={1000} className="w-10" />
                     </AvatarFallback>
                   </Avatar>
                   <p className="text-primary-200 hidden md:block">
                     {authUser?.firstName}
                   </p>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-white text-primary-700">
+                <DropdownMenuContent className="bg-white border border-primary-200 text-primary-700">
                   <DropdownMenuItem
                     className="cursor-pointer hover:bg-primary-700! hover:text-primary-100! font-bold"
                     onClick={() =>

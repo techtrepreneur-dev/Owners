@@ -11,8 +11,6 @@ datasource db {
 
 enum Highlight {
   HighSpeedInternetAccess
-  WasherDryer
-  AirConditioning
   Heating
   SmokeFree
   CableReady
@@ -43,14 +41,6 @@ enum Amenity {
   WiFi
 }
 
-enum PropertyType {
-  Rooms
-  Tinyhouse
-  Apartment
-  Villa
-  Townhouse
-  Cottage
-}
 
 enum ApplicationStatus {
   Pending
@@ -61,8 +51,6 @@ enum ApplicationStatus {
 enum PaymentStatus {
   Pending
   Paid
-  PartiallyPaid
-  Overdue
 }
 
 model Property {
@@ -70,7 +58,8 @@ model Property {
   name              String
   description       String
   pricePerMonth     Float
-  securityDeposit   Float
+  otherFees         Float
+  totalFee          Float
   applicationFee    Float
   photoUrls         String[]
   amenities         Amenity[]
@@ -79,8 +68,8 @@ model Property {
   isParkingIncluded Boolean      @default(false)
   beds              Int
   baths             Float
-  squareFeet        Int
-  propertyType      PropertyType
+  squareFeet        Int?         @default(0)
+  propertyType      String
   postedDate        DateTime     @default(now())
   averageRating     Float?       @default(0)
   numberOfReviews   Int?         @default(0)
@@ -94,7 +83,6 @@ model Property {
 
   location     Location      @relation(fields: [locationId], references: [id])
   manager      Manager       @relation(fields: [managerId], references: [id])
-  leases       Lease[]
   applications Application[]  
   favoritedBy  Tenant[]      @relation("TenantFavorites")
 }
@@ -107,6 +95,7 @@ model Manager {
   email       String @unique
   phone       String
   state       String
+  city        String
   password    String
 
   address     String @default("")
@@ -126,12 +115,12 @@ model Tenant {
   email       String @unique
   phone       String
   state       String
+  city        String
   password    String
   emailVerified Boolean @default(false)
 
   favorites    Property[]    @relation("TenantFavorites")
   applications Application[]
-  leases       Lease[]
 }
 
 model Location {
@@ -156,38 +145,22 @@ model Application {
   email           String
   phoneNumber     String
   message         String?
-  leaseId         Int?              @unique
+  createdAt       DateTime @default(now())
 
   property Property @relation(fields: [propertyId], references: [id])
   tenant   Tenant   @relation(fields: [tenantId], references: [id])
-  lease    Lease?   @relation(fields: [leaseId], references: [id])
 }
 
-model Lease {
-  id              Int      @id @default(autoincrement())
-  startDate       DateTime
-  endDate         DateTime
-  rent            Float
-  deposit         Float
-  propertyId      Int
-  tenantId        Int
-
-  property    Property     @relation(fields: [propertyId], references: [id])
-  tenant      Tenant       @relation(fields: [tenantId], references: [id])
-  application Application?
-  payments    Payment[]
-}
 
 model Payment {
   id            Int           @id @default(autoincrement())
-  amountDue     Float
-  amountPaid    Float
-  dueDate       DateTime
-  paymentDate   DateTime
+  type          String
+  email         String
+  amount        Float
+  reference     String @unique
   paymentStatus PaymentStatus
-  leaseId       Int
-
-  lease Lease @relation(fields: [leaseId], references: [id])
+  userId     Int
+  createdAt DateTime @default(now())
 }
 
 
@@ -197,5 +170,4 @@ model VerificationCode {
   token     String
   expiresAt DateTime
   createdAt DateTime @default(now())
-
 }

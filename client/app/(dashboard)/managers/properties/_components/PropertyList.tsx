@@ -28,7 +28,6 @@ export default function PropertyList({ properties }) {
             setFilterOptions(["", ""])
             result = properties
         }
-
         setPropertyData(result)
     }
 
@@ -72,7 +71,6 @@ export default function PropertyList({ properties }) {
                                 <X className="text-gray-500 h-4 w-4 " />
                             </div>
                         )}
-
                     </div>
 
                     {/* filter */}

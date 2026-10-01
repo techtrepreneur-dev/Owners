@@ -1,10 +1,11 @@
 import express from "express";
-import { createApplication, listApplications, updateApplicationStatus } from "../controllers/applicationControllers.js";
+import { approveApplication, cancleApplication, createApplication, listApplications } from "../controllers/applicationControllers.js";
 
 const router = express.Router();
 
 router.post("/", createApplication);
-router.put("/:id/status", updateApplicationStatus);
-router.get("/", listApplications);
+router.put("/approve", approveApplication);
+router.get("/:id/:type", listApplications);
+router.post("/cancle", cancleApplication);
 
 export default router;

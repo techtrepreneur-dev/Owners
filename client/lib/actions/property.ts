@@ -4,6 +4,11 @@ import z from "zod"
 import { propertyValidation } from "../validations"
 import { cookies } from 'next/headers';
 import { Property, Tenant } from "../types/prismaTypes";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// AI generate suggestion base on image selected
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+
 
 export type ActionState = {
     success: boolean;
@@ -15,14 +20,13 @@ export const createProperty = async (prevState: ActionState, formData: FormData)
 
     try {
         const images = formData.getAll("photoUrls").filter((item) => item.name !== "undefined")
+        console.log(images)
         const formValues = {
             name: formData.get("name"),
             description: formData.get("description"),
             pricePerMonth: formData.get("pricePerMonth"),
-            securityDeposit: formData.get("securityDeposit"),
+            otherFees: formData.get("otherFees"),
             applicationFee: formData.get("applicationFee"),
-            // isPetsAllowed: formData.get("isPetsAllowed"),
-            // isParkingIncluded: formData.get("isParkingIncluded"),
             photoUrls: images,
             amenities: formData.getAll("amenities"),
             highlights: formData.getAll("highlights"),
@@ -30,7 +34,6 @@ export const createProperty = async (prevState: ActionState, formData: FormData)
             baths: formData.get("baths"),
             squareFeet: formData.get("squareFeet"),
 
-            //   propertyType: z.nativeEnum(PropertyTypeEnum)
             address: formData.get("address"),
             city: formData.get("city"),
             state: formData.get("state"),
@@ -47,14 +50,15 @@ export const createProperty = async (prevState: ActionState, formData: FormData)
         uploadFormData.append('name', validatedData.name);
         uploadFormData.append('description', validatedData.description);
         uploadFormData.append('pricePerMonth', String(validatedData.pricePerMonth));
-        uploadFormData.append('securityDeposit', String(validatedData.securityDeposit));
+        uploadFormData.append('otherFees', String(validatedData.otherFees));
+        uploadFormData.append('totalFee', String(formData.get("totalFee")));
         uploadFormData.append('applicationFee', String(validatedData.applicationFee));
         uploadFormData.append('isPetsAllowed', String(formData.get("isPetsAllowed")));
         uploadFormData.append('isParkingIncluded', String(formData.get("isParkingIncluded")));
         validatedData.photoUrls?.forEach((file) => {
             uploadFormData.append("photoUrls", file); // Multiple files
         });
-        uploadFormData.append('propertyType', "Tinyhouse");
+        uploadFormData.append('propertyType', String(formData.get("propertyType")));
         uploadFormData.append('amenities', JSON.stringify(validatedData.amenities));
         uploadFormData.append('highlights', JSON.stringify(validatedData.highlights));
         uploadFormData.append('beds', String(validatedData.beds));
@@ -170,4 +174,64 @@ export const getProperty = async (id: number) => {
     }
 
     return { success: true, data: data.data, error: null }
+}
+
+
+export async function AiGenerateDescriptionSuggestions(formData: FormData) {
+    try {
+        const name = formData.get("name") as string;
+
+        // getAll retrieves an array of all files appended under the "images" key
+        const files = formData.getAll("images") as File[];
+
+        const prompt = `Using the initial name and images of properties provided,
+        generate a better name suggestion using parts of the initial name provided for the property. Images might include both the interiors(kitchen, bathrooms, e.t.c) and exteriors 
+        of the property, so pay detailed attention.  Also generate a description of two
+        paragraphs long for the property by analyzing the images provided. Return the result in json format like this
+        {
+         name:,
+         descrition:,
+        }`
+
+        // 1. Start the parts array with the main text prompt
+        const parts: any[] = [
+            { text: prompt },
+            { text: name }
+        ];
+
+        // 2. Loop through every uploaded image and format it for Gemini
+        for (const file of files) {
+            if (file && file.size > 0) {
+                const arrayBuffer = await file.arrayBuffer();
+                const base64Data = Buffer.from(arrayBuffer).toString("base64");
+
+                parts.push({
+                    inlineData: {
+                        data: base64Data,
+                        mimeType: file.type, // handles mixed formats (e.g., png and jpeg together)
+                    },
+                });
+            }
+        }
+
+        // 3. Send the entire multimodal payload to Gemini
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const result = await model.generateContent({
+            contents: [
+                {
+                    role: "user",
+                    parts: parts,
+                },
+            ],
+        });
+        const returnText = result.response.text()
+        const cleanedText = returnText.replace(/```(?:json)?\n?/g, "").trim()
+
+        const data = JSON.parse(cleanedText);
+        return { success: true, data, error: null };
+
+    } catch (error) {
+        console.error("Server Action Gemini Error:", error);
+        return { success: false, error: "Something went wrong on the server." }
+    }
 }

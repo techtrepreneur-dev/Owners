@@ -37,14 +37,6 @@ export default async function page({ params }: Param) {
                     />
                 </div>
             </div>
-
-            {/* {authUser && (
-                <ApplicationModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    propertyId={propertyId}
-                />
-            )} */}
         </div>
     );
 };

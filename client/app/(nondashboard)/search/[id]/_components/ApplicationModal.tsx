@@ -11,19 +11,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { ActionState, createApplication } from "@/lib/actions/application";
 import { useAppSelector } from "@/state/store";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
-const prevState: ActionState = { success: false, error: null, fieldErrors: null }
+
+const prevState: ActionState = { success: false, error: null, url: null, fieldErrors: null }
 
 const ApplicationModal = ({ propertyId, open, closeModal }) => {
 
+    const router = useRouter()
     const authUser = useAppSelector((state) => state.global.authUser);
     const [state, formAction, isPending] = useActionState(createApplication, prevState)
 
     useEffect(() => {
         if (state.success) {
-            toast.success("Application submitted")
+            router.push(state.url || "")
         } else if (!state.success && state.error !== null) {
             toast.error(state.error)
         }

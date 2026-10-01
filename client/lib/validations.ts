@@ -24,7 +24,12 @@ export const signUpValidation = z
         state: z
             .string()
             .min(3, "State must be at least 2 characters")
-            .max(50, "State must be less than 50 characters"),
+            .max(20, "State must be less than 50 characters"),
+
+        city: z
+            .string()
+            .min(3, "City must be at least 2 characters")
+            .max(20, "City must be less than 20 characters"),
 
         password: z
             .string()
@@ -133,10 +138,9 @@ export const propertyValidation = z.object({
     name: z.string().min(1, "Name is required"),
     description: z.string().min(1, "Description is required"),
     pricePerMonth: z.coerce.number().min(100, { message: "Value should not be less that 100 Naira" }).int(),
-    securityDeposit: z.coerce.number().min(100, { message: "Value should not be less that 100 Naira" }).int(),
-    applicationFee: z.coerce.number().min(100, { message: "Value should not be less that 100 Naira" }).int(),
-    // isPetsAllowed: z.boolean(),
-    // isParkingIncluded: z.boolean(),
+    otherFees: z.coerce.number().min(100, { message: "Value should not be less that 100 Naira" }).int(),
+    applicationFee: z.coerce.number().min(50, { message: "Value should not be less that 50 Naira" }).int(),
+
     photoUrls: z
         .array(imageSchema)
         .min(1, { message: "Atleast one image is required" })
@@ -146,7 +150,6 @@ export const propertyValidation = z.object({
     beds: z.coerce.number().min(0).max(10).int().optional(),
     baths: z.coerce.number().min(0).max(10).int().optional(),
     squareFeet: z.coerce.number().min(0).int().optional(),
-    //   propertyType: z.nativeEnum(PropertyTypeEnum),
     address: z.string().min(1, "Address is required"),
     city: z.string().min(1, "City is required"),
     state: z.string().min(1, "State is required"),

@@ -58,8 +58,6 @@ export const AmenityIcons: Record<AmenityEnum, LucideIcon> = {
 
 export enum HighlightEnum {
   HighSpeedInternetAccess = "HighSpeedInternetAccess",
-  WasherDryer = "WasherDryer",
-  AirConditioning = "AirConditioning",
   Heating = "Heating",
   SmokeFree = "SmokeFree",
   CableReady = "CableReady",
